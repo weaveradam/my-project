@@ -1,0 +1,27 @@
+@dc:title "Project Requirements"
+@dc:description "Requirements, concerns, and capabilities for the project."
+description <http://www.example.com/project/requirements#> as requirements {
+    uses <http://purl.org/dc/elements/1.1/> as dc
+    uses <http://www.example.com/method/vocabulary#> as method
+
+    instance Stakeholder_ProgramOfficer : method:Stakeholder
+    instance Stakeholder_DepartmentHead : method:Stakeholder
+    instance Stakeholder_Customer : method:Stakeholder
+
+    instance Concern_Reliability : method:Concern
+    instance Concern_RangeSensitivity : method:Concern
+    instance Capability_ReliabilityEstimate : method:Capability
+    instance Capability_RangeAssessment : method:Capability
+
+    instance Req_ReliabilityEstimate : method:Requirement [
+        method:isStatedBy Stakeholder_ProgramOfficer
+        method:addressesConcern Concern_Reliability
+        method:enablesCapability Capability_ReliabilityEstimate
+    ]
+
+    instance Req_RangeSensitivity : method:Requirement [
+        method:isStatedBy Stakeholder_DepartmentHead
+        method:addressesConcern Concern_RangeSensitivity
+        method:enablesCapability Capability_RangeAssessment
+    ]
+}

@@ -1,0 +1,285 @@
+@dc:title "My Project Description"
+@dc:description "The My Project ontologies."
+description <http://www.example.com/project/description#> as myproject-desc {
+    uses <http://purl.org/dc/elements/1.1/> as dc
+    uses <http://www.omg.org/spec/Commons/Base#> as base
+    uses <http://www.example.com/method/vocabulary#> as method
+
+    // Ports used across the system
+    instance Port_Aero_In : method:Port
+    instance Port_Aero_Out : method:Port
+    instance Port_Propulsion_In : method:Port
+    instance Port_Propulsion_Out : method:Port
+    instance Port_Nacelle_In : method:Port
+    instance Port_Nacelle_Out : method:Port
+    instance Port_Engine_In : method:Port
+    instance Port_Engine_Out : method:Port
+    instance Port_Stability_Command : method:Port
+    instance Port_Stability_Return : method:Port
+    instance Port_StabilizingSurface_Command : method:Port
+    instance Port_StabilizingSurface_Return : method:Port
+    instance Port_Actuator_PowerIn : method:Port
+    instance Port_Actuator_SignalIn : method:Port
+    instance Port_ControlUnit_PowerOut : method:Port
+    instance Port_ControlUnit_SignalOut : method:Port
+    instance Port_Thermal_Bulkhead : method:Port
+    instance Port_Payload_Interface : method:Port
+
+    ref instance Port_Aero_In [
+        method:direction "in"
+    ]
+
+    ref instance Port_Aero_Out [
+        method:direction "out"
+    ]
+
+    ref instance Port_Propulsion_In [
+        method:direction "in"
+    ]
+
+    ref instance Port_Propulsion_Out [
+        method:direction "out"
+    ]
+
+    ref instance Port_Nacelle_In [
+        method:direction "in"
+    ]
+
+    ref instance Port_Nacelle_Out [
+        method:direction "out"
+    ]
+
+    ref instance Port_Engine_In [
+        method:direction "in"
+    ]
+
+    ref instance Port_Engine_Out [
+        method:direction "out"
+    ]
+
+    ref instance Port_Stability_Command [
+        method:direction "in"
+    ]
+
+    ref instance Port_Stability_Return [
+        method:direction "out"
+    ]
+
+    ref instance Port_StabilizingSurface_Command [
+        method:direction "in"
+    ]
+
+    ref instance Port_StabilizingSurface_Return [
+        method:direction "out"
+    ]
+
+    ref instance Port_Actuator_PowerIn [
+        method:direction "in"
+    ]
+
+    ref instance Port_Actuator_SignalIn [
+        method:direction "in"
+    ]
+
+    ref instance Port_ControlUnit_PowerOut [
+        method:direction "out"
+    ]
+
+    ref instance Port_ControlUnit_SignalOut [
+        method:direction "out"
+    ]
+
+    ref instance Port_Thermal_Bulkhead [
+        method:direction "in"
+    ]
+
+    ref instance Port_Payload_Interface [
+        method:direction "in"
+    ]
+
+    // Subsystem Instances aligned to requested engineering organization
+    instance Sys_Aero : method:AerodynamicsAndStructures [
+        method:targetLiftToDrag 6.0
+        method:contains Part_Wings, Part_Nacelle, Part_Body, Part_NoseCone, Part_Tail
+        method:constrains Sys_Thermal
+        method:constrains Sys_Propulsion
+    ]
+
+    instance Sys_Thermal : method:ThermalSystem [
+        method:maxInternalTempF 160
+        method:contains Part_NoseStackup, Part_LeadingEdgeStackup, Part_NacelleStackup, Part_BodyStackup
+        method:constrains Sys_Propulsion
+    ]
+
+    instance Sys_Propulsion : method:PropulsionSystem [
+        method:contains Part_Engine
+        method:constrains Sys_Payload
+    ]
+
+    instance Sys_Stability : method:StabilityAndControl [
+        method:contains Part_StabilizingSurfaces, Part_ControlSurfaceActuator, Part_ControlUnit
+        method:constrains Sys_Aero
+        method:constrains Sys_Payload
+    ]
+    
+    instance Sys_Payload : method:PayloadSystem [
+        method:contains Part_Payload, Part_Fuel
+        method:constrains Sys_Thermal
+    ]
+
+    // Aerodynamics & Structures parts
+    instance Part_Wings : method:Wing [
+        method:hasPort Port_Aero_In, Port_Aero_Out
+        method:massKg 272
+        method:factorOfSafety 1.6
+        method:lift 2.4
+        method:drag 1.6
+        method:wingspan 38.0
+        method:marginOfSafety 1.6
+        base:isContainedBy Sys_Aero
+    ]
+
+    instance Part_Nacelle : method:Nacelle [
+        method:hasPort Port_Nacelle_In, Port_Nacelle_Out
+        method:massKg 60
+        method:factorOfSafety 1.3
+        method:marginOfSafety 1.3
+        base:isContainedBy Sys_Aero
+    ]
+
+    instance Part_Body : method:Body [
+        method:massKg 192.0
+        method:factorOfSafety 1.2
+        method:marginOfSafety 1.2
+        base:isContainedBy Sys_Aero
+    ]
+
+    instance Part_NoseCone : method:NoseCone [
+        method:massKg 84.0
+        method:factorOfSafety 1.9
+        method:marginOfSafety 1.9
+        base:isContainedBy Sys_Aero
+    ]
+
+    instance Part_Tail : method:Tail [
+        method:massKg 24.0
+        method:factorOfSafety 1.4
+        method:marginOfSafety 1.4
+        base:isContainedBy Sys_Aero
+    ]
+
+    instance Part_StabilizingSurfaces : method:StabilizingSurface [
+        method:hasPort Port_StabilizingSurface_Command, Port_StabilizingSurface_Return
+        method:massKg 29.5
+        method:factorOfSafety 2.1
+        method:lift 1.2
+        method:drag 0.8
+        method:marginOfSafety 2.1
+        base:isContainedBy Sys_Stability
+    ]
+
+    // Thermal System stackups
+    instance Part_NoseStackup : method:NoseStackup [
+        method:massKg 80
+        method:marginOfSafety 1.8
+        method:conductionCoefficient 0.82
+        base:isContainedBy Part_NoseCone
+    ]
+
+    instance Part_LeadingEdgeStackup : method:LeadingEdgeStackup [
+        method:massKg 35
+        method:marginOfSafety 1.7
+        method:conductionCoefficient 0.89
+        base:isContainedBy Part_Wings
+    ]
+
+    instance Part_NacelleStackup : method:NacelleStackup [
+        method:massKg 8.0
+        method:marginOfSafety 1.6
+        method:conductionCoefficient 0.74
+        base:isContainedBy Part_Nacelle
+    ]
+
+    instance Part_BodyStackup : method:BodyStackup [
+        method:massKg 140
+        method:marginOfSafety 1.5
+        method:conductionCoefficient 0.77
+        base:isContainedBy Part_Body
+    ]
+
+    // Propulsion parts
+    instance Part_Engine : method:Engine [
+        method:hasPort Port_Engine_In, Port_Engine_Out
+        method:massKg 150.0
+        method:thrust 26500.0
+        method:marginOfSafety 1.8
+        base:isContainedBy Sys_Propulsion
+    ]
+
+    // Stability & control parts
+    instance Part_ControlSurfaceActuator : method:ControlSurfaceActuator [
+        method:hasPort Port_Actuator_PowerIn, Port_Actuator_SignalIn
+        method:massKg 18.0
+        method:marginOfSafety 1.9
+        base:isContainedBy Sys_Stability
+    ]
+
+    instance Part_ControlUnit : method:ControlUnit [
+        method:hasPort Port_ControlUnit_PowerOut, Port_ControlUnit_SignalOut
+        method:massKg 11.5
+        method:marginOfSafety 1.7
+        base:isContainedBy Sys_Stability
+    ]
+
+    // Payload parts
+    instance Part_Payload : method:MissionPayload [
+        method:massKg 1200.0
+        base:isContainedBy Sys_Payload
+    ]
+
+    instance Part_Fuel : method:Fuel [
+        method:massKg 220.0
+        base:isContainedBy Sys_Payload
+    ]
+
+    relation instance Conn_AeroToPropulsion : method:Connection [
+        from Port_Aero_Out
+        to Port_Engine_In
+        method:transfers "airflow and drag margin"
+    ]
+
+    relation instance Conn_ControlLoop : method:Connection [
+        from Port_Stability_Command
+        to Port_Aero_In
+        method:transfers "control commands and stability corrections"
+    ]
+
+    relation instance Conn_ThermalLoad : method:Connection [
+        from Port_Thermal_Bulkhead
+        to Port_Payload_Interface
+        method:transfers "thermal load"
+    ]
+
+    // Simulation & Test Tasks
+    instance Task_Gmsh_GridGeneration : method:ComputationalAnalysis [
+        method:informs Sys_Aero
+    ]
+
+    instance Task_SU2_HypersonicCFD : method:ComputationalAnalysis [
+        method:informs Sys_Aero
+        method:informs Sys_Stability
+        method:informs Sys_Propulsion
+    ]
+
+    instance Task_TaylorMaccoll_ODE : method:ComputationalAnalysis [
+        method:informs Sys_Aero
+    ]
+
+    instance Task_ThermalFEA : method:ComputationalAnalysis [
+        method:informs Sys_Thermal
+    ]
+
+    instance Task_WindTunnel : method:PhysicalTest [
+        method:verifies Sys_Aero
+    ]
+}

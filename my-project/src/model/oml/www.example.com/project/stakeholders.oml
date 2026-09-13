@@ -1,0 +1,10 @@
+@dc:title "Project Stakeholders"
+@dc:description "Stakeholder definitions for the project."
+description <http://www.example.com/project/stakeholders#> as stakeholders {
+    uses <http://purl.org/dc/elements/1.1/> as dc
+    uses <http://www.example.com/method/vocabulary#> as method
+
+    instance Stakeholder_ProgramOfficer : method:Stakeholder
+    instance Stakeholder_DepartmentHead : method:Stakeholder
+    instance Stakeholder_Customer : method:Stakeholder
+}

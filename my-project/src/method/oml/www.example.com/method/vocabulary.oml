@@ -1,0 +1,144 @@
+@dc:title "My Project Vocabulary"
+@dc:description "The My Project ontologies."
+vocabulary <http://www.example.com/method/vocabulary#> as method {
+    extends <http://purl.org/dc/elements/1.1/> as dc
+    extends <http://www.w3.org/2001/XMLSchema#> as xsd
+
+    scalar Decimal = xsd:decimal
+    scalar Integer = xsd:integer
+
+    aspect EngineeringArtifact
+    aspect SimulationTask
+
+    // Taxonomy
+    concept Subsystem < EngineeringArtifact
+    concept PhysicalPart < EngineeringArtifact
+    concept Component < PhysicalPart
+    concept Port < EngineeringArtifact
+    concept Stakeholder < EngineeringArtifact
+    concept Requirement < EngineeringArtifact
+    concept Concern < EngineeringArtifact
+    concept Capability < EngineeringArtifact
+
+    concept Aerodynamics < Subsystem
+    concept AerodynamicsAndStructures < Aerodynamics
+    concept ThermalSystem < Subsystem
+    concept Propulsion < Subsystem
+    concept PropulsionSystem < Propulsion
+    concept StabilityControl < Subsystem
+    concept StabilityAndControl < StabilityControl
+    concept Payload < Subsystem
+    concept PayloadSystem < Payload
+
+    concept Wing < Component
+    concept Nacelle < Component
+    concept Body < Component
+    concept NoseCone < Component
+    concept Tail < Component
+    concept StabilizingSurface < Component
+    concept ThermalStackup < PhysicalPart
+    concept NoseStackup < ThermalStackup
+    concept LeadingEdgeStackup < ThermalStackup
+    concept NacelleStackup < ThermalStackup
+    concept BodyStackup < ThermalStackup
+    concept Engine < Component
+    concept ControlSurfaceActuator < Component
+    concept ControlUnit < Component
+    concept MissionPayload < Component
+    concept Fuel < Component
+    
+    concept ComputationalAnalysis < SimulationTask
+    concept PhysicalTest < SimulationTask
+
+    // Defined Concept
+    // A thermal subsystem is any subsystem that directly contains thermal stackup parts.
+    concept ThermalSubsystem = Subsystem [
+        restricts some contains to ThermalStackup
+    ]
+
+    // Scalar Properties
+    scalar property massKg [ domain PhysicalPart range Decimal ]
+    scalar property factorOfSafety [ domain PhysicalPart range Decimal ]
+    scalar property lift [ domain PhysicalPart range Decimal ]
+    scalar property drag [ domain PhysicalPart range Decimal ]
+    scalar property wingspan [ domain PhysicalPart range Decimal ]
+    scalar property marginOfSafety [ domain PhysicalPart range Decimal ]
+    scalar property conductionCoefficient [ domain PhysicalPart range Decimal ]
+    scalar property thrust [ domain PhysicalPart range Decimal ]
+    scalar property targetLiftToDrag [ domain Aerodynamics range Decimal ]
+    scalar property maxInternalTempF [ domain ThermalSystem range Integer ]
+    scalar property direction [ domain Port range xsd:string functional ]
+    scalar property transfers [ domain Connection range xsd:string functional ]
+
+    // Relations with Characteristics (Requirement 2)
+    relation entity Constrains [
+        from Subsystem to Subsystem
+        forward constrains
+        reverse isConstrainedBy
+        asymmetric
+        irreflexive
+    ]
+    relation entity Informs [
+        from SimulationTask to Subsystem
+        forward informs
+        reverse isInformedBy
+        asymmetric
+        irreflexive
+    ]
+    relation entity Verifies [
+        from SimulationTask to Subsystem
+        forward verifies
+        reverse isVerifiedBy
+        asymmetric
+        irreflexive
+    ]
+    relation entity Contains [
+        from Subsystem to EngineeringArtifact
+        forward contains
+        reverse isContainedIn
+        transitive
+    ]
+    relation entity HasPort [
+        from Component to Port
+        forward hasPort
+        reverse isPortOf
+        inverse functional
+    ]
+    relation entity Connection [
+        from Port to Port
+        forward connects
+        reverse isConnectedBy
+        asymmetric
+        irreflexive
+    ]
+    relation entity StatedBy [
+        from Requirement to Stakeholder
+        forward isStatedBy
+        reverse states
+        functional
+    ]
+    relation entity AddressesConcern [
+        from Requirement to Concern
+        forward addressesConcern
+        reverse isConcernOf
+    ]
+    relation entity EnablesCapability [
+        from Concern to Capability
+        forward enablesCapability
+        reverse isEnabledBy
+    ]
+    
+    // Relation derived by the Rule
+    relation entity IndirectlyConstrains [
+        from Subsystem to Subsystem
+        forward indirectlyConstrains
+        reverse isIndirectlyConstrainedBy
+    ]
+
+    // Rule (Requirement 5)
+    // Answers BQ #2: "Which subsystems are correlated to each other?"
+    // If Subsystem A constrains B, and B constrains C, then A indirectly constrains C.
+    rule IndirectConstraint [
+        constrains(a, b) & constrains(b, c) -> indirectlyConstrains(a, c)
+    ]
+}

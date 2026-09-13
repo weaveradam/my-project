@@ -1,0 +1,14 @@
+@dc:title "Commons Base"
+@dc:description "Minimal base vocabulary for containment."
+vocabulary <http://www.omg.org/spec/Commons/Base#> as base {
+    extends <http://purl.org/dc/elements/1.1/> as dc
+    extends <http://www.example.com/method/vocabulary#> as method
+
+    relation entity Containment [
+        from method:EngineeringArtifact to method:EngineeringArtifact
+        forward isContainedBy
+        reverse contains
+        asymmetric
+        irreflexive
+    ]
+}

@@ -1,0 +1,2 @@
+vocabulary bundle <http://www.example.com/method/vocabulary.bundle#> as myproject-vocabulary-bundle {
+}
