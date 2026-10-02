@@ -1,0 +1,3 @@
+instance {{SUBSYSTEM_ID}} : method:{{SUBSYSTEM_TYPE}} [
+    method:contains {{ARTIFACT_IDS}}
+]

@@ -24,4 +24,5 @@ description <http://www.example.com/project/requirements#> as requirements {
         method:addressesConcern Concern_RangeSensitivity
         method:enablesCapability Capability_RangeAssessment
     ]
+
 }

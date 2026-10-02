@@ -112,6 +112,7 @@ description <http://www.example.com/project/description#> as myproject-desc {
     ]
 
     instance Sys_Propulsion : method:PropulsionSystem [
+        method:cruiseSpeedMps 1500.0
         method:contains Part_Engine
         method:constrains Sys_Payload
     ]
@@ -131,7 +132,8 @@ description <http://www.example.com/project/description#> as myproject-desc {
     instance Part_Wings : method:Wing [
         method:hasPort Port_Aero_In, Port_Aero_Out
         method:massKg 272
-        method:factorOfSafety 1.6
+        method:standardDeviation 0.3
+        method:liftToDragRatio 6.0
         method:lift 2.4
         method:drag 1.6
         method:wingspan 38.0
@@ -142,28 +144,28 @@ description <http://www.example.com/project/description#> as myproject-desc {
     instance Part_Nacelle : method:Nacelle [
         method:hasPort Port_Nacelle_In, Port_Nacelle_Out
         method:massKg 60
-        method:factorOfSafety 1.3
+        method:standardDeviation 0.3
         method:marginOfSafety 1.3
         base:isContainedBy Sys_Aero
     ]
 
     instance Part_Body : method:Body [
         method:massKg 192.0
-        method:factorOfSafety 1.2
+        method:standardDeviation 0.3
         method:marginOfSafety 1.2
         base:isContainedBy Sys_Aero
     ]
 
     instance Part_NoseCone : method:NoseCone [
         method:massKg 84.0
-        method:factorOfSafety 1.9
+        method:standardDeviation 0.3
         method:marginOfSafety 1.9
         base:isContainedBy Sys_Aero
     ]
 
     instance Part_Tail : method:Tail [
         method:massKg 24.0
-        method:factorOfSafety 1.4
+        method:standardDeviation 0.3
         method:marginOfSafety 1.4
         base:isContainedBy Sys_Aero
     ]
@@ -171,7 +173,7 @@ description <http://www.example.com/project/description#> as myproject-desc {
     instance Part_StabilizingSurfaces : method:StabilizingSurface [
         method:hasPort Port_StabilizingSurface_Command, Port_StabilizingSurface_Return
         method:massKg 29.5
-        method:factorOfSafety 2.1
+        method:standardDeviation 0.3
         method:lift 1.2
         method:drag 0.8
         method:marginOfSafety 2.1
@@ -182,28 +184,36 @@ description <http://www.example.com/project/description#> as myproject-desc {
     instance Part_NoseStackup : method:NoseStackup [
         method:massKg 80
         method:marginOfSafety 1.8
+        method:standardDeviation 0.3
         method:conductionCoefficient 0.82
+        method:fuelCapacityDisplacementKg 25.0
         base:isContainedBy Part_NoseCone
     ]
 
     instance Part_LeadingEdgeStackup : method:LeadingEdgeStackup [
         method:massKg 35
         method:marginOfSafety 1.7
+        method:standardDeviation 0.3
         method:conductionCoefficient 0.89
+        method:fuelCapacityDisplacementKg 15.0
         base:isContainedBy Part_Wings
     ]
 
     instance Part_NacelleStackup : method:NacelleStackup [
         method:massKg 8.0
         method:marginOfSafety 1.6
+        method:standardDeviation 0.3
         method:conductionCoefficient 0.74
+        method:fuelCapacityDisplacementKg 10.0
         base:isContainedBy Part_Nacelle
     ]
 
     instance Part_BodyStackup : method:BodyStackup [
         method:massKg 140
         method:marginOfSafety 1.5
+        method:standardDeviation 0.3
         method:conductionCoefficient 0.77
+        method:fuelCapacityDisplacementKg 30.0
         base:isContainedBy Part_Body
     ]
 
@@ -213,6 +223,8 @@ description <http://www.example.com/project/description#> as myproject-desc {
         method:massKg 150.0
         method:thrust 26500.0
         method:marginOfSafety 1.8
+        method:standardDeviation 0.3
+        method:thrustSpecificFuelConsumption 0.000018
         base:isContainedBy Sys_Propulsion
     ]
 
@@ -221,6 +233,7 @@ description <http://www.example.com/project/description#> as myproject-desc {
         method:hasPort Port_Actuator_PowerIn, Port_Actuator_SignalIn
         method:massKg 18.0
         method:marginOfSafety 1.9
+        method:standardDeviation 0.3
         base:isContainedBy Sys_Stability
     ]
 
@@ -228,17 +241,23 @@ description <http://www.example.com/project/description#> as myproject-desc {
         method:hasPort Port_ControlUnit_PowerOut, Port_ControlUnit_SignalOut
         method:massKg 11.5
         method:marginOfSafety 1.7
+        method:standardDeviation 0.3
         base:isContainedBy Sys_Stability
     ]
 
     // Payload parts
     instance Part_Payload : method:MissionPayload [
         method:massKg 1200.0
+        method:marginOfSafety 1.5
+        method:standardDeviation 0.3
         base:isContainedBy Sys_Payload
     ]
 
     instance Part_Fuel : method:Fuel [
         method:massKg 220.0
+        method:fuelCapacityKg 260.0
+        method:marginOfSafety 1.5
+        method:standardDeviation 0.3
         base:isContainedBy Sys_Payload
     ]
 
@@ -281,5 +300,17 @@ description <http://www.example.com/project/description#> as myproject-desc {
 
     instance Task_WindTunnel : method:PhysicalTest [
         method:verifies Sys_Aero
+    ]
+
+    instance Task_RangeSensitivityEstimate : method:ComputationalAnalysis [
+        method:includesRangeRelevantPart Part_Wings, Part_Nacelle, Part_Body,
+            Part_NoseCone, Part_Tail, Part_StabilizingSurfaces,
+            Part_NoseStackup, Part_LeadingEdgeStackup, Part_NacelleStackup,
+            Part_BodyStackup, Part_Engine, Part_ControlSurfaceActuator,
+            Part_ControlUnit, Part_Payload, Part_Fuel
+        method:informs Sys_Aero
+        method:informs Sys_Thermal
+        method:informs Sys_Propulsion
+        method:informs Sys_Payload
     ]
 }

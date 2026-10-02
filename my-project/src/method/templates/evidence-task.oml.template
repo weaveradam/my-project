@@ -1,0 +1,3 @@
+instance {{TASK_ID}} : method:{{TASK_TYPE}} [
+    method:{{EVIDENCE_RELATION}} {{SUBSYSTEM_ID}}
+]

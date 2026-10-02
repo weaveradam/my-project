@@ -1,0 +1,3 @@
+instance {{PORT_ID}} : method:Port [
+    method:direction "{{DIRECTION}}"
+]

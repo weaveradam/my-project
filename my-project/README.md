@@ -56,6 +56,30 @@ The repository is organized into vocabulary and model layers.
 - `src/model/oml/www.example.com/project/requirements.oml`
   - Requirement, concern, and capability definitions tied back to stakeholders.
 
+### Method deliverables
+
+- `METHOD.md`
+  - Prescribes the four patterns, business rules, rationale, uncertainty, open
+    issues, and the folder layout.
+- `src/method/patterns/`
+  - Narrative rationale and alternatives for system decomposition, interfaces,
+    requirement traceability, and analysis/verification.
+- `src/method/editors/`
+  - One reusable editor specification per pattern, including input checks and
+    Compose output guidance.
+- `src/method/templates/`
+  - Reusable `.oml.template` Compose templates for subsystems, ports, connections,
+    requirements, and evidence tasks.
+- `notebooks/method_dogfooding.ipynb`
+  - Narrative plus ten concrete OML editor examples.
+- `ANALYSIS.md`
+  - Module 1 question findings, evidence, and diagnosed gaps.
+- `src/method/md/www.example.com/method/analysis/dashboard.md`
+  - Reusable Compose dashboard template with graph, matrix, chart, and scripted
+    direct-tie analysis.
+- `src/model/md/www.example.com/project/analysis/`
+  - Project dashboard invocation and pattern orphan/missing-relationship queries.
+
 ## How to use this project
 
 ### 1. Understand the vocabulary layer

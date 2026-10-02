@@ -1,0 +1,5 @@
+instance {{REQUIREMENT_ID}} : method:Requirement [
+    method:isStatedBy {{STAKEHOLDER_ID}}
+    method:addressesConcern {{CONCERN_ID}}
+    method:enablesCapability {{CAPABILITY_ID}}
+]

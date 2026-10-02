@@ -1,0 +1,5 @@
+relation instance {{CONNECTION_ID}} : method:Connection [
+    from {{SOURCE_PORT_ID}}
+    to {{DESTINATION_PORT_ID}}
+    method:transfers "{{TRANSFER_DESCRIPTION}}"
+]

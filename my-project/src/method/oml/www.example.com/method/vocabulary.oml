@@ -19,6 +19,8 @@ vocabulary <http://www.example.com/method/vocabulary#> as method {
     concept Requirement < EngineeringArtifact
     concept Concern < EngineeringArtifact
     concept Capability < EngineeringArtifact
+    concept ReliabilityEstimate < EngineeringArtifact
+    concept ReliabilityVariable < EngineeringArtifact
 
     concept Aerodynamics < Subsystem
     concept AerodynamicsAndStructures < Aerodynamics
@@ -58,15 +60,25 @@ vocabulary <http://www.example.com/method/vocabulary#> as method {
 
     // Scalar Properties
     scalar property massKg [ domain PhysicalPart range Decimal ]
-    scalar property factorOfSafety [ domain PhysicalPart range Decimal ]
     scalar property lift [ domain PhysicalPart range Decimal ]
     scalar property drag [ domain PhysicalPart range Decimal ]
     scalar property wingspan [ domain PhysicalPart range Decimal ]
     scalar property marginOfSafety [ domain PhysicalPart range Decimal ]
+    scalar property standardDeviation [ domain PhysicalPart range Decimal ]
     scalar property conductionCoefficient [ domain PhysicalPart range Decimal ]
     scalar property thrust [ domain PhysicalPart range Decimal ]
     scalar property targetLiftToDrag [ domain Aerodynamics range Decimal ]
+    scalar property liftToDragRatio [ domain Component range Decimal ]
     scalar property maxInternalTempF [ domain ThermalSystem range Integer ]
+    scalar property fuelCapacityKg [ domain Fuel range Decimal ]
+    scalar property fuelCapacityDisplacementKg [ domain PhysicalPart range Decimal ]
+    scalar property cruiseSpeedMps [ domain Propulsion range Decimal ]
+    scalar property thrustSpecificFuelConsumption [ domain Engine range Decimal ]
+    scalar property reliabilityValue [ domain ReliabilityEstimate range Decimal ]
+    scalar property uncertainty [ domain ReliabilityEstimate range Decimal ]
+    scalar property numericValue [ domain ReliabilityVariable range Decimal ]
+    scalar property failureRate [ domain ReliabilityVariable range Decimal ]
+    scalar property unitSymbol [ domain ReliabilityVariable range xsd:string functional ]
     scalar property direction [ domain Port range xsd:string functional ]
     scalar property transfers [ domain Connection range xsd:string functional ]
 
@@ -123,9 +135,29 @@ vocabulary <http://www.example.com/method/vocabulary#> as method {
         reverse isConcernOf
     ]
     relation entity EnablesCapability [
-        from Concern to Capability
+        from Requirement to Capability
         forward enablesCapability
         reverse isEnabledBy
+    ]
+    relation entity HasReliabilityEstimate [
+        from Subsystem to ReliabilityEstimate
+        forward hasReliabilityEstimate
+        reverse isReliabilityEstimateOf
+    ]
+    relation entity UsesReliabilityVariable [
+        from ReliabilityEstimate to ReliabilityVariable
+        forward usesReliabilityVariable
+        reverse isUsedByReliabilityEstimate
+    ]
+    relation entity TranslatesReliabilityVariable [
+        from ReliabilityVariable to ReliabilityVariable
+        forward translatesAcrossSystemsTo
+        reverse isTranslatedAcrossSystemsFrom
+    ]
+    relation entity IncludesRangeRelevantPart [
+        from SimulationTask to PhysicalPart
+        forward includesRangeRelevantPart
+        reverse isIncludedInRangeAnalysis
     ]
     
     // Relation derived by the Rule
