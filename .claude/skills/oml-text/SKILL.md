@@ -8,9 +8,8 @@ description: 'Use when working with OML source text, syntax, and repository stru
 Use this skill when the answer depends on the OML source files themselves rather than the model surface exposed by OML MCP.
 
 ## When to use
-- OML MCP is unavailable.
-- The task is about textual authoring details such as aliases, annotations, comments, file layout, or instruction files.
-- You need to compare source declarations across files or inspect syntax that is easier to answer from text.
+- **ONLY when OML MCP is unavailable**, OR when the user asks exclusively about comments, prefix aliases, or file layout that MCP tools cannot expose.
+- **Do NOT use this skill** (and do not read or edit `.oml` files directly) for listing instances, checking asserted relationships (`oml_assertions`), or adding/modifying instances (`oml_update`) when OML MCP is available—even if the user prompt names specific `.oml` file paths or asks to "preserve existing content/syntax".
 
 ## Workflow
 1. Start from the smallest relevant OML file.
