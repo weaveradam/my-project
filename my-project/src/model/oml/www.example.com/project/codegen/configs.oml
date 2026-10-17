@@ -1,0 +1,13 @@
+description <http://www.example.com/project/codegen/configs#> as configs {
+    uses <http://opencaesar.io/codegen#> as codegen
+    extends <http://www.example.com/method/codegen/architecture-report#> as architectureReport
+
+    instance architecture : codegen:Config [
+        codegen:spec architectureReport:ArchitectureReportSpec
+        codegen:context "http://www.example.com/project/description"
+        codegen:binding [
+            codegen:key "path"
+            codegen:value "build/generated"
+        ]
+    ]
+}

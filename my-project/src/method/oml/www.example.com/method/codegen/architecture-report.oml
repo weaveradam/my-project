@@ -1,0 +1,68 @@
+description <http://www.example.com/method/codegen/architecture-report#> as architectureReport {
+    uses <http://opencaesar.io/codegen#> as codegen
+
+    instance ArchitectureReportSpec : codegen:Spec [
+        codegen:construct """
+            PREFIX codegen: <http://opencaesar.io/codegen#>
+            PREFIX method: <http://www.example.com/method/vocabulary#>
+            PREFIX templates: <http://www.example.com/method/codegen/architecture-report#>
+            PREFIX xst: <https://mozilla.github.io/nunjucks#>
+
+            CONSTRUCT {
+                ?file a codegen:File ;
+                    codegen:path ?path ;
+                    codegen:template templates:ArchitectureReportTemplate ;
+                    codegen:root ?subsystem .
+
+                ?subsystem a xst:Subsystem ;
+                    xst:name ?subsystemName ;
+                    xst:part ?part ;
+                    xst:constraint ?targetName .
+
+                ?part a xst:Part ;
+                    xst:name ?partName ;
+                    xst:mass ?mass .
+            }
+            WHERE {
+                ?subsystem a method:Subsystem .
+
+                BIND(REPLACE(STR(?subsystem), "^.*[/#]", "") AS ?subsystemName)
+                BIND(IRI("urn:file:architecture-report") AS ?file)
+                BIND(CONCAT("${path}/ArchitectureReport.md") AS ?path)
+
+                OPTIONAL {
+                    ?subsystem method:contains+ ?part .
+                    ?part a method:PhysicalPart .
+                    BIND(REPLACE(STR(?part), "^.*[/#]", "") AS ?partName)
+                    OPTIONAL { ?part method:massKg ?mass }
+                }
+
+                OPTIONAL {
+                    ?subsystem method:constrains ?target .
+                    BIND(REPLACE(STR(?target), "^.*[/#]", "") AS ?targetName)
+                }
+            }
+        """
+        codegen:parameter "path"
+    ]
+
+    instance ArchitectureReportTemplate : codegen:Template [
+        codegen:body """
+            # Vehicle Architecture Report
+
+            This report is generated from the modeled subsystem containment and direct constraint relationships.
+
+            ## Direct subsystem constraints
+
+            | Source subsystem | Target subsystem |
+            | --- | --- |{% for subsystem in objects(file, "codegen:root") %}{% for target in objects(subsystem, "xst:constraint") %}
+            | {{ object(subsystem, "xst:name") }} | {{ target }} |{% endfor %}{% endfor %}
+
+            ## Contained physical parts
+
+            | Subsystem | Part | Mass (kg) |
+            | --- | --- | ---: |{% for subsystem in objects(file, "codegen:root") %}{% for part in objects(subsystem, "xst:part") %}
+            | {{ object(subsystem, "xst:name") }} | {{ object(part, "xst:name") }} | {{ object(part, "xst:mass") or "Not modeled" }} |{% endfor %}{% endfor %}
+        """
+    ]
+}

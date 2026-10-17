@@ -5,13 +5,17 @@ oml-code:
 # project npm settings
 project:
   name: "@oml/my-project"
-  version: 0.1.0
+  version: 0.4.0
   title: My Project
   description: The My Project ontologies.
 
 # source folders
 sources:
   - src
+
+# Package the reusable method, including its code generator.
+pack:
+  - include: [src/method]
 
 # oml server settings
 # By default the server binds a free port chosen by the OS (the actual port is
@@ -25,3 +29,6 @@ sources:
 # defaults:
 #   export: -o build/owl
 #   reason: -o build/owl -t
+defaults:
+  render: -m src/model/md -b build/web -c src/model/oml/www.example.com/project/description.bundle.oml
+  pack: -o build/dist

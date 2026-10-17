@@ -79,6 +79,8 @@ provenance, solver version, and test results remain open issues.
 - `src/method/patterns/`: rationale, alternatives, uncertainty, and open issues
   for each pattern.
 - `src/method/editors/`: one editor specification per pattern.
+- `src/method/md/`: reusable Markdown Compose editors that expose instance
+  shapes through OML table editors.
 - `src/method/templates/`: reusable `.oml.template` Compose templates consumed
   by the editors. The template extension keeps placeholder text out of the OML
   source scanner until an editor expands it into a concrete description.
