@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      OML_PLATFORM_API_KEY: ${{ secrets.OML_PLATFORM_API_KEY }}
+    defaults:
+      run:
+        working-directory: my-project
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      - name: Install OML
+        run: npm install -g @oml/cli
+
+      - name: Version OML
+        run: oml -v
+
+      - name: Check authentication
+        run: oml whoami
+
+      - name: Starting server
+        run: oml start
+
+      - name: Linting
+        run: oml lint
+
+      - name: Validating
+        run: oml validate
+
+      - name: Reasoning
+        run: oml reason
+
+      - name: Stopping server
+        if: always()
+        run: oml stop
