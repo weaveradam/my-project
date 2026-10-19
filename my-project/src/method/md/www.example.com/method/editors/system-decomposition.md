@@ -46,13 +46,11 @@ method:SubsystemShape
 method:PhysicalPartShape
     a sh:NodeShape ;
     sh:targetClass method:PhysicalPart ;
-    sh:targetNode <http://www.example.com/project/description#Part_NoseCone> ;
     sh:property [
         sh:path method:massKg ;
         sh:name "Mass (kg)" ;
         sh:datatype xsd:decimal ;
         sh:maxCount 1 ;
-        sh:minCount 2 ;
     ] ;
     .
 ```
