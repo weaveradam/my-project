@@ -1,5 +1,8 @@
 # Hypersonic Vehicle Design Ontology
 
+[![Release](https://img.shields.io/github/v/tag/weaveradam/my-project?label=release)](https://github.com/weaveradam/my-project/releases/tag/v1.0.0)
+[![Live Site](https://img.shields.io/website?url=https%3A%2F%2Fweaveradam.github.io%2Fmy-project%2F)](https://weaveradam.github.io/my-project/)
+
 This project models a hypersonic vehicle design process as an ontology using [OML](https://www.modelware.io/). The purpose is to represent the main engineering subsystems, their parts, interfaces, requirements, and design tradeoffs that influence vehicle performance and range.
 
 The ontology is organized around the major design concerns for a hypersonic platform:
