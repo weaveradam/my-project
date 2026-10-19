@@ -5,7 +5,7 @@ oml-code:
 # project npm settings
 project:
   name: "@oml/my-project"
-  version: 0.4.0
+  version: 1.0.0
   title: My Project
   description: The My Project ontologies.
 

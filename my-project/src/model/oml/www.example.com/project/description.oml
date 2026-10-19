@@ -103,7 +103,6 @@ description <http://www.example.com/project/description#> as myproject-desc {
         method:contains Part_Wings, Part_Nacelle, Part_Body, Part_NoseCone, Part_Tail
         method:constrains Sys_Thermal
         method:constrains Sys_Propulsion
-        method:constrains Sys_Aero
     ]
 
     instance Sys_Thermal : method:ThermalSystem [
