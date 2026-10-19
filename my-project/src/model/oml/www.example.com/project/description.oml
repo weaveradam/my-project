@@ -314,5 +314,4 @@ description <http://www.example.com/project/description#> as myproject-desc {
         method:informs Sys_Payload
     ]
 
-    instance Task_Week8LintProbe : method:UnresolvedWeek8Concept
 }
